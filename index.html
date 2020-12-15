@@ -183,7 +183,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-15 19:34:36" itemprop="dateModified" datetime="2020-12-15T19:34:36+08:00">2020-12-15</time>
+                <time title="修改时间：2020-12-15 20:07:25" itemprop="dateModified" datetime="2020-12-15T20:07:25+08:00">2020-12-15</time>
               </span>
 
           
@@ -200,77 +200,14 @@
           <h1 id="this"><a href="#this" class="headerlink" title="this"></a>this</h1><p><u>this是JavaScript中的关键字之一，它呗自动定义在所有函数的作用域中</u></p>
 <h2 id="关于this的指向"><a href="#关于this的指向" class="headerlink" title="关于this的指向"></a>关于this的指向</h2><p>首先记住这些话，关于this的指向就有了大体的方向</p>
 <p><strong>this既不指向函数自身，也不指向函数的词法作用域；它和函数的声明位置没有关系，只与调用位置有关，且this总是指向最后调用它的那个对象！</strong></p>
-<p>我们来看这段代码</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.count++;</span><br><span class="line">&#125;</span><br><span class="line">foo.count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>;i &lt;= <span class="number">3</span>;i++) &#123;</span><br><span class="line">    foo();</span><br><span class="line">    <span class="built_in">console</span>.log(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.count);<span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
-
-<p>这是一段疾苦函数调用次数的demo，函数foo调用了三次，如果this指向的是函数自身的话，那么最后的 foo.count 就会输出3，但是输出的却是0。这表明foo中的this并不指向它自身。这也印证了前面所说的<strong>this不指向函数自身</strong></p>
-<p><em>实际上，调用foo时，其中的this.count++其实为全局作用域创建了一个count变量，为什么我们下面说</em></p>
-<p>再来看这段代码</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">this</span>.bor();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo();<span class="comment">// error</span></span><br></pre></td></tr></table></figure>
-
-<p>这段代码试图用this来连接bor和foo的此法作用域，但是失败了，因为<strong>this再任何情况下都不指向函数的词法作用域</strong></p>
-<h3 id="调用位置"><a href="#调用位置" class="headerlink" title="调用位置"></a>调用位置</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    bor();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    baz();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">baz</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;调用位置&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo();</span><br></pre></td></tr></table></figure>
-
-<p>通过上述代码可以看到，foo的调用位置在全局，但是在foo中调用了bor，又在bor中调用了baz，所以各个调用位置如下</p>
-<ul>
-<li>foo: 全局</li>
-<li>bor: foo–&gt;bor ，调用位置为foo</li>
-<li>baz: foo–&gt;bor–&gt;baz，调用位置为bor</li>
-</ul>
-<p>熟悉了绑定规则，来看一下绑定规则吧</p>
-<h3 id="绑定规则"><a href="#绑定规则" class="headerlink" title="绑定规则"></a>绑定规则</h3><h4 id="默认绑定"><a href="#默认绑定" class="headerlink" title="默认绑定"></a>默认绑定</h4><p>当情形为独立函数调用时，应用的就是默认绑定规则</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line">foo(); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看到，调用函数foo时，其中的a输出的时全局变量中的1；这是因为在全局作用域下调用时，默认的调用对象是window。</p>
-<p>如果是在严格模式下调用时，this优惠指向谁</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    “use strict”</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line">foo(); <span class="comment">// TypeError: Cannot read property &#x27;a&#x27; of undefined</span></span><br><span class="line">       <span class="comment">//at foo</span></span><br></pre></td></tr></table></figure>
-
-<p>在严格模式下，this会指向undefined</p>
-<h4 id="隐式绑定"><a href="#隐式绑定" class="headerlink" title="隐式绑定"></a>隐式绑定</h4><p><strong>当函数调用时拥有上下文对象，或者被某个对象拥有或包含</strong>此时会应用隐式绑定的原则</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    foo: foo,</span><br><span class="line">&#125;；</span><br><span class="line">obj.foo(); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看到，输出为1，这是因为obj中的函数赋值操作，而且时obj调用了foo，所以foo中的this应用隐式绑定规则指向了obj。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> obj1 = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    foo: foo,</span><br><span class="line">&#125;；</span><br><span class="line"><span class="keyword">let</span> obj2 = &#123;</span><br><span class="line">    a = <span class="number">2</span>,</span><br><span class="line">    obj1: obj1,</span><br><span class="line">&#125;</span><br><span class="line">obj2.obj1.foo(); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-
-<p>由上述代码可以知道，this只和最后调用它的对象有关，最后调用foo的为obj1，所以输出1。这印证了开头所说，<strong>this永远指向最后调用他的对象</strong></p>
-<h4 id="显示绑定"><a href="#显示绑定" class="headerlink" title="显示绑定"></a>显示绑定</h4><p>显示绑定主要运用call，apply，bind等方法强制改变this指向</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> obj1 = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    foo: foo,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> obj2 = &#123;</span><br><span class="line">    a: <span class="number">2</span>,</span><br><span class="line">    obj1: obj1,</span><br><span class="line">&#125;</span><br><span class="line">obj1.foo.call(obj2); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看到，最后调用的对象是obj1，但是foo中的this缺指向obj2;这是因为我们运用了call方法显示将this绑定在obj2上。</p>
-<p>除此之外，还有apply方法</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> obj1 = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    foo: foo,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> obj2 = &#123;</span><br><span class="line">    a: <span class="number">2</span>,</span><br><span class="line">    obj1: obj1,</span><br><span class="line">&#125;</span><br><span class="line">obj1.foo.apply(obj2); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-
-<p>那么call 和 apply 有什么不同呢？他们在参数传递时略有不同</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">x,y</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a + x + y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    foo: foo,</span><br><span class="line">&#125;;</span><br><span class="line">foo.call(obj,<span class="number">1</span>,<span class="number">2</span>); <span class="comment">// 4</span></span><br><span class="line">foo.apply(obj,[<span class="number">1</span>,<span class="number">2</span>]);  <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看到，call和apply主要区别在于传递参数的不同，call和apply的第一个参数是要绑定的this对象；call的第二个参数是要接收的参数列表。但是apply是一个数组。</p>
-<p>还有一种bind 方法也可以实现改变this绑定</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bind</span>(<span class="params">fn,obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        fn.apply(obj);</span><br><span class="line">&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj1 = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">foo = bind(foo,obj1);</span><br><span class="line">foo(); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-
-<p>这创建了一个辅助函数用来修改this的指向，但是其中JavaScript中存在bind方法用来修改this指向</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">x,y</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.a + x + y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">foo = foo.bind(obj,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">foo();  <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>与call和apply不同的是bind方法创建一个新的函数， 当被调用时，将其this关键字设置为提供的值，在调用新函数时，在任何提供之前提供一个给定的参数序列。</strong></p>
-<p>座椅bind会新创建一个函数，我们必须手动去调用。</p>
-<h4 id="new绑定"><a href="#new绑定" class="headerlink" title="new绑定"></a>new绑定</h4><p>当用new调用一个函数或者发生构造函数调用时，会发生四步</p>
-<ol>
-<li>创建一个全新的对象</li>
-<li>实现对象的原型连接</li>
-<li>将函数调用时的this绑定在这个新对象上</li>
-<li>如果没有返回对象，则返回这个新创建的对象</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.a = a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = <span class="keyword">new</span> foo(<span class="number">1</span>);</span><br><span class="line"><span class="built_in">console</span>.log(obj.a); <span class="comment">// 1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h4><p>ES6中引入了箭头函数，箭头函数没有自己的this，只能通过作用域查找来确定自己的this。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    foo: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="built_in">this</span>.a);</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">obj.foo(); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看到，虽然调用setTimeout的是window，但是箭头函数的this还是指向obj，<strong>因为箭头函数的this是根据函数或者全局作用域来决定this，如果箭头函数被非箭头函数包含，则 this 绑定的是最近一层非箭头函数的 this；而且箭头函数绑定的this无法修改</strong></p>
-<p>上述代码的实现过程</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    foo: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> that = <span class="built_in">this</span>;</span><br><span class="line">        <span class="built_in">setTimeout</span>( <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(that.a);</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">obj.foo(); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-
-<p>在foo中我们用that保存了this的值。</p>
-<p>还有一种情况，<strong>如果箭头函数没有被非箭头函数包含，那么其中的this会指向window，在严格模式下，this为underfined</strong></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="2020/12/13/this/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -312,10 +249,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-11-12 21:39:30 / 修改时间：22:28:14" itemprop="dateCreated datePublished" datetime="2020-11-12T21:39:30+08:00">2020-11-12</time>
+              <time title="创建时间：2020-11-12 21:39:30" itemprop="dateCreated datePublished" datetime="2020-11-12T21:39:30+08:00">2020-11-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-15 20:08:34" itemprop="dateModified" datetime="2020-12-15T20:08:34+08:00">2020-12-15</time>
+              </span>
 
           
 
@@ -333,46 +276,14 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(x);</span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 
 <p>上述代码会输出undefined</p>
-<h6 id="因为var声明的变量会自动提升到代码顶部，称为变量提升，所以上述代码的工作原理为"><a href="#因为var声明的变量会自动提升到代码顶部，称为变量提升，所以上述代码的工作原理为" class="headerlink" title="因为var声明的变量会自动提升到代码顶部，称为变量提升，所以上述代码的工作原理为"></a>因为var声明的变量会自动提升到代码顶部，称为变量提升，所以上述代码的工作原理为</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x;</span><br><span class="line"><span class="built_in">console</span>.log(x);</span><br><span class="line">x = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<h6 id="只是提升了变量的声明，初始化操作发生在原位置"><a href="#只是提升了变量的声明，初始化操作发生在原位置" class="headerlink" title="只是提升了变量的声明，初始化操作发生在原位置"></a>只是提升了变量的声明，初始化操作发生在原位置</h6></li>
-<li><p>var声明的变量不具有块级作用域</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">   <span class="keyword">var</span> x = <span class="number">1</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(x);</span><br><span class="line"><span class="comment">//1</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看到输出结果为1，输出了if代码块中的变量</p>
-<h6 id="var声明的变量只具有函数作用域和全局作用域"><a href="#var声明的变量只具有函数作用域和全局作用域" class="headerlink" title="var声明的变量只具有函数作用域和全局作用域"></a>var声明的变量只具有函数作用域和全局作用域</h6></li>
-<li><p>var可以重复声明变量</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> x = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(x);</span><br><span class="line"><span class="comment">//2</span></span><br></pre></td></tr></table></figure>
-
-<p>以上代码在非严格模式下不会报错</p>
-</li>
-</ul>
-<h2 id="let"><a href="#let" class="headerlink" title="let"></a>let</h2><ul>
-<li>let声明的变量不会变量提升</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(x);</span><br><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="comment">//报错</span></span><br></pre></td></tr></table></figure>
-
-<p>上述代码会报错</p>
-<h6 id="let不允许在变量声明之前使用这个变量，会触发暂时性死区"><a href="#let不允许在变量声明之前使用这个变量，会触发暂时性死区" class="headerlink" title="let不允许在变量声明之前使用这个变量，会触发暂时性死区"></a>let不允许在变量声明之前使用这个变量，会触发暂时性死区</h6><ul>
-<li>let声明的变量具有块级作用域</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(x);</span><br><span class="line"><span class="comment">//error</span></span><br></pre></td></tr></table></figure>
-
-<p>let在代码块中定义的变量，只允许在代码块中访问</p>
-<ul>
-<li>let不允许重复声明变量</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> x = <span class="number">2</span>;</span><br><span class="line"><span class="comment">//error</span></span><br></pre></td></tr></table></figure>
-
-<p>这样做的目的是减少变量重复赋值造成不可预计的危险</p>
-<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><ul>
-<li>const声明的变量只可读</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(x);</span><br><span class="line"><span class="comment">//1</span></span><br><span class="line">x = <span class="number">2</span>;</span><br><span class="line"><span class="comment">//error</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="const声明的变量不可以重新赋值，只可读，用于不用修改的变量"><a href="#const声明的变量不可以重新赋值，只可读，用于不用修改的变量" class="headerlink" title="const声明的变量不可以重新赋值，只可读，用于不用修改的变量"></a>const声明的变量不可以重新赋值，只可读，用于不用修改的变量</h6><h6 id="而且const声明变量的时候必须初始化这个变量！"><a href="#而且const声明变量的时候必须初始化这个变量！" class="headerlink" title="而且const声明变量的时候必须初始化这个变量！"></a>而且const声明变量的时候必须初始化这个变量！</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> x;</span><br><span class="line"><span class="comment">//error</span></span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="2020/11/12/var let const区别/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
